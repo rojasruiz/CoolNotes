@@ -52,11 +52,11 @@ public class DashboardFragment extends Fragment {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        vault = new PersistenceVault();
-        notesList = vault.getNotesList();
+        //Persistence
         main = getActivity();
+        vault = new PersistenceVault(main.getFilesDir());
+        notesList = vault.getNotesList();
 
-        notesList = new ArrayList<Note>(); //TODO Persistence
         setActivityResultLauncher();
 
         return root;
@@ -87,6 +87,8 @@ public class DashboardFragment extends Fragment {
                             Intent intent = result.getData();
                             notesList = (ArrayList<Note>) intent.getExtras().get("notesList");
                             setUpRecycler();
+                            vault.setNotesList(notesList);
+                            vault.saveVaultToFile(main.getFilesDir());
                         }
                     }
                 }
