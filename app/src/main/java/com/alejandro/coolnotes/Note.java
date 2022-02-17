@@ -1,14 +1,18 @@
 package com.alejandro.coolnotes;
 
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Note implements Serializable {
     private String tittle;
     private String description;
+    private ArrayList<byte[]> photos;
 
     public Note() {
         tittle = "";
         description = "";
+        photos = new ArrayList<byte[]>();
     }
 
     public String getTittle() {
@@ -25,5 +29,13 @@ public class Note implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public ArrayList<byte[]> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(ArrayList<byte[]> photos) {
+        this.photos = photos;
     }
 }

@@ -6,31 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".NoteActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/etNoteTittle"
+        <LinearLayout
+            android:id="@+id/linear_notes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="35sp"
-            android:ems="10"
-            android:inputType="textMultiLine"
-            android:hint="@string/note_tittle"/>
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/etNoteDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textMultiLine"
-            android:hint="@string/note_description"/>
+            <EditText
+                android:id="@+id/etNoteTittle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/note_tittle"
+                android:inputType="textMultiLine"
+                android:textSize="35sp" />
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/etNoteDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/note_description"
+                android:inputType="textMultiLine" />
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

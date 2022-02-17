@@ -5,10 +5,15 @@
       <map>
         <entry key="..\:/AndroidStudio/Moviles/CoolNotes/app/src/main/res/layout/activity_main.xml" value="0.2513586956521739" />
         <entry key="..\:/AndroidStudio/Moviles/CoolNotes/app/src/main/res/layout/fragment_dashboard.xml" value="0.2513586956521739" />
-        <entry key="..\:/Users/Alejandro/AndroidStudioProjects/CoolNotes/app/src/main/res/layout/activity_note.xml" value="0.4954710144927536" />
+        <entry key="..\:/Users/Alejandro/AndroidStudioProjects/CoolNotes/app/src/main/res/layout/activity_main.xml" value="0.4954710144927536" />
+        <entry key="..\:/Users/Alejandro/AndroidStudioProjects/CoolNotes/app/src/main/res/layout/activity_note.xml" value="0.33" />
+        <entry key="..\:/Users/Alejandro/AndroidStudioProjects/CoolNotes/app/src/main/res/layout/appbarnotes.xml" value="0.28541666666666665" />
         <entry key="..\:/Users/Alejandro/AndroidStudioProjects/CoolNotes/app/src/main/res/layout/fragment_dashboard.xml" value="0.33" />
+        <entry key="..\:/Users/Alejandro/AndroidStudioProjects/CoolNotes/app/src/main/res/layout/fragment_home.xml" value="0.4954710144927536" />
         <entry key="..\:/Users/Alejandro/AndroidStudioProjects/CoolNotes/app/src/main/res/layout/row_notes.xml" value="0.35144927536231885" />
         <entry key="..\:/Users/Alejandro/AndroidStudioProjects/CoolNotes/app/src/main/res/layout/row_tasks.xml" value="0.4954710144927536" />
+        <entry key="..\:/Users/Alejandro/AndroidStudioProjects/CoolNotes/app/src/main/res/menu/bottom_nav_menu.xml" value="0.5260416666666666" />
+        <entry key="..\:/Users/Alejandro/AndroidStudioProjects/CoolNotes/app/src/main/res/menu/menu_notes.xml" value="0.525" />
       </map>
     </option>
   </component>
