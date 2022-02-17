@@ -36,6 +36,14 @@ public class NoteActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PersistenceVault vault = new PersistenceVault();
+        vault.setNotesList(noteList);
+        vault.saveVaultToFile(getFilesDir());
+    }
+
     private void initNote() {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
