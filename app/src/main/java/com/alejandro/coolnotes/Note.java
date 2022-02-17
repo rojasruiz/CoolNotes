@@ -1,10 +1,14 @@
 package com.alejandro.coolnotes;
 
-public class Note {
+import java.io.Serializable;
+
+public class Note implements Serializable {
     private String tittle;
     private String description;
 
     public Note() {
+        tittle = "";
+        description = "";
     }
 
     public String getTittle() {
