@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
@@ -18,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.alejandro.coolnotes.AdapterNotes;
 import com.alejandro.coolnotes.Note;
@@ -28,6 +30,8 @@ import com.alejandro.coolnotes.databinding.FragmentDashboardBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+
+import jp.wasabeef.recyclerview.animators.LandingAnimator;
 
 public class DashboardFragment extends Fragment {
 
@@ -111,10 +115,12 @@ public class DashboardFragment extends Fragment {
 
         //TODO change input list
         recycler = view.findViewById(R.id.recycler_notes);
-        GridLayoutManager mLayout = new GridLayoutManager(main, 2, GridLayoutManager.VERTICAL, false);
+        StaggeredGridLayoutManager mLayout = new StaggeredGridLayoutManager(2,1);
         recycler.setLayoutManager(mLayout);
         RecyclerView.Adapter adapter = new AdapterNotes(main, notesList);
         recycler.setAdapter(adapter);
+        recycler.setItemAnimator(new LandingAnimator(new OvershootInterpolator(2.0f)));
+        recycler.getItemAnimator().setRemoveDuration(220);
     }
 
     @Override

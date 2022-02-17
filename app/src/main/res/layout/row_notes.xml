@@ -36,7 +36,7 @@
                     android:textSize="30sp"
                     android:layout_weight="10"/>
                 <ImageButton
-                    android:id="@+id/imageButton"
+                    android:id="@+id/delRowButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -53,6 +53,7 @@
                     android:id="@+id/note_description_row"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:maxHeight="130dp"
                     android:layout_weight="10"
                     android:hint="@string/note_description"
                     android:inputType="textMultiLine"

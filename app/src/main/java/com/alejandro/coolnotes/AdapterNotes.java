@@ -8,6 +8,8 @@ import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -50,6 +52,16 @@ public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.ViewHolder> 
         Note note = mData.get(position);
         holder.title.setText(note.getTittle());
         holder.description.setText(note.getDescription());
+
+        holder.delRow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mData.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(0,mData.size());
+                decrementarPos();
+            }
+        });
     }
 
     @Override
@@ -61,11 +73,13 @@ public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.ViewHolder> 
         TextView title;
         TextView description;
         Context context;
+        ImageButton delRow;
 
         ViewHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.note_tittle_row);
             description = itemView.findViewById(R.id.note_description_row);
+            delRow = itemView.findViewById(R.id.delRowButton);
             context = title.getContext();
         }
     }
