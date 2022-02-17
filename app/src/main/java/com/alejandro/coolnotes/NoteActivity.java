@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +33,7 @@ public class NoteActivity extends AppCompatActivity {
     private ArrayList<Note> noteList;
     private Note note;
     private LinearLayout linearNote;
+    private ImageView imageSelected;
 
 
     @Override
@@ -44,6 +47,33 @@ public class NoteActivity extends AppCompatActivity {
         description = findViewById(R.id.etNoteDescription);
 
         initNote();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        // you can set menu header with title icon etc
+        menu.setHeaderTitle("Are you sure?");
+        // add menu items
+        menu.add(0, v.getId(), 0, "Delete");
+        imageSelected = (ImageView) v;
+    }
+
+    // menu item select listener
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        if (item.getTitle() == "Delete") {
+
+            for (int i = 2; i < linearNote.getChildCount(); i++) {
+                if (linearNote.getChildAt(i).equals(imageSelected)){
+                    note.getPhotos().remove(i-2);
+                    linearNote.removeView(imageSelected);
+                }
+            }
+
+        }
+        return true;
     }
 
     @Override
@@ -90,19 +120,7 @@ public class NoteActivity extends AppCompatActivity {
             note.getPhotos().add(imageByte);
 
             //Add click listener
-
-            iv.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    for (int i = 2; i < linearNote.getChildCount(); i++) {
-                        if (linearNote.getChildAt(i).equals(iv)){
-                            note.getPhotos().remove(i-2);
-                            linearNote.removeView(iv);
-                        }
-                    }
-                    return true;
-                }
-            });
+            registerForContextMenu(iv);
         }
     }
 
@@ -191,18 +209,6 @@ public class NoteActivity extends AppCompatActivity {
         lp.setMargins(10,10,10,10);
         iv.setLayoutParams(lp);
         iv.setImageBitmap(imageBitmap);
-
-        iv.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                for (int i = 2; i < linearNote.getChildCount(); i++) {
-                    if (linearNote.getChildAt(i).equals(iv)){
-                        note.getPhotos().remove(i-2);
-                        linearNote.removeView(iv);
-                    }
-                }
-                return true;
-            }
-        });
+        registerForContextMenu(iv);
     }
 }
