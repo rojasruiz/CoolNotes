@@ -40,12 +40,13 @@ public class NoteActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         noteList = (ArrayList<Note>) extras.get("notesList");
-        Boolean newNote = intent.getExtras().getBoolean("newNote");
+        Boolean newNote = extras.getBoolean("newNote");
 
         if (newNote){
             note = noteList.get(noteList.size()-1);
         }else{
-            note = new Note(); //TODO change this
+            int notePos = extras.getInt("notePos");
+            note = noteList.get(notePos);
         }
 
         tittle.setText(note.getTittle());
@@ -59,12 +60,12 @@ public class NoteActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                note.setTittle(tittle.getText().toString());
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                note.setTittle(tittle.getText().toString());
             }
         });
 

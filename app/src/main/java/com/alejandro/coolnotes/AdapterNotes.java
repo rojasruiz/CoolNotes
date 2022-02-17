@@ -15,15 +15,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alejandro.coolnotes.ui.dashboard.DashboardFragment;
+
 import java.util.Date;
 import java.util.List;
 
 public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.ViewHolder> {
-    private List<Note> mData;
-    private LayoutInflater mInflater;
-    private Context context;
+    private final List<Note> mData;
+    private final LayoutInflater mInflater;
+    private final Context context;
+    private final DashboardFragment fragment;
 
     private int pos = 0;
+
+    public AdapterNotes(Context context, List<Note> data, DashboardFragment fragment) {
+        this.context = context;
+        this.mInflater = LayoutInflater.from(context);
+        this.mData = data;
+        this.fragment = fragment;
+    }
 
     public int getPos() {
         return this.pos;
@@ -31,14 +41,6 @@ public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.ViewHolder> 
 
     public void decrementarPos() {
         this.pos--;
-    }
-
-    ;
-
-    public AdapterNotes(Context context, List<Note> data) {
-        this.context = context;
-        this.mInflater = LayoutInflater.from(context);
-        this.mData = data;
     }
 
     @Override
@@ -58,10 +60,33 @@ public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.ViewHolder> 
             public void onClick(View v) {
                 mData.remove(position);
                 notifyItemRemoved(position);
-                notifyItemRangeChanged(0,mData.size());
+                notifyItemRangeChanged(0, mData.size());
                 decrementarPos();
             }
         });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment.openNote(position);
+            }
+        });
+
+        holder.title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment.openNote(position);
+            }
+        });
+
+        holder.description.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment.openNote(position);
+            }
+        });
+
+
     }
 
     @Override

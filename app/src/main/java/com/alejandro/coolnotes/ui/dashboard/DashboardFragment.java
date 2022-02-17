@@ -117,10 +117,18 @@ public class DashboardFragment extends Fragment {
         recycler = view.findViewById(R.id.recycler_notes);
         StaggeredGridLayoutManager mLayout = new StaggeredGridLayoutManager(2,1);
         recycler.setLayoutManager(mLayout);
-        RecyclerView.Adapter adapter = new AdapterNotes(main, notesList);
+        RecyclerView.Adapter adapter = new AdapterNotes(main, notesList, this);
         recycler.setAdapter(adapter);
         recycler.setItemAnimator(new LandingAnimator(new OvershootInterpolator(2.0f)));
         recycler.getItemAnimator().setRemoveDuration(220);
+    }
+
+    public void openNote(int notePos){
+        Intent intent = new Intent(main, NoteActivity.class);
+        intent.putExtra("notesList",notesList);
+        intent.putExtra("newNote", false);
+        intent.putExtra("notePos",notePos);
+        activityResultLauncher.launch(intent);
     }
 
     @Override
