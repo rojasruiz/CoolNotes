@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -87,6 +88,21 @@ public class NoteActivity extends AppCompatActivity {
             byte[] imageByte = baos.toByteArray();
 
             note.getPhotos().add(imageByte);
+
+            //Add click listener
+
+            iv.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    for (int i = 2; i < linearNote.getChildCount(); i++) {
+                        if (linearNote.getChildAt(i).equals(iv)){
+                            note.getPhotos().remove(i-2);
+                            linearNote.removeView(iv);
+                        }
+                    }
+                    return true;
+                }
+            });
         }
     }
 
@@ -175,5 +191,18 @@ public class NoteActivity extends AppCompatActivity {
         lp.setMargins(10,10,10,10);
         iv.setLayoutParams(lp);
         iv.setImageBitmap(imageBitmap);
+
+        iv.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                for (int i = 2; i < linearNote.getChildCount(); i++) {
+                    if (linearNote.getChildAt(i).equals(iv)){
+                        note.getPhotos().remove(i-2);
+                        linearNote.removeView(iv);
+                    }
+                }
+                return true;
+            }
+        });
     }
 }
