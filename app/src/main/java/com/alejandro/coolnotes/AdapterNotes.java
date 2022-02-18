@@ -17,18 +17,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alejandro.coolnotes.ui.dashboard.DashboardFragment;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.ViewHolder> {
-    private final List<Note> mData;
+    private final ArrayList<Note> mData;
     private final LayoutInflater mInflater;
     private final Context context;
     private final DashboardFragment fragment;
 
     private int pos = 0;
 
-    public AdapterNotes(Context context, List<Note> data, DashboardFragment fragment) {
+    public AdapterNotes(Context context, ArrayList<Note> data, DashboardFragment fragment) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
@@ -62,6 +64,9 @@ public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.ViewHolder> 
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(0, mData.size());
                 decrementarPos();
+                PersistenceVault vault = fragment.getVault();
+                vault.setNotesList(mData);
+                vault.saveVaultToFile(fragment.getActivity().getFilesDir());
             }
         });
 

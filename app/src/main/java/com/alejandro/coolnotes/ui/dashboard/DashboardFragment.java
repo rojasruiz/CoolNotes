@@ -138,4 +138,8 @@ public class DashboardFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+    public PersistenceVault getVault() {
+        return vault;
+    }
 }
