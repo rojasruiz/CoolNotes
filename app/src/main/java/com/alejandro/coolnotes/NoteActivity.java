@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,16 +20,20 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class NoteActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int RESULT_LOAD_IMAGE = 2;
     private EditText tittle;
     private EditText description;
     private ArrayList<Note> noteList;
@@ -90,7 +96,10 @@ public class NoteActivity extends AppCompatActivity {
         if (id == R.id.add_camera) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-
+        }else if (id == R.id.add_gallery) {
+            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+            photoPickerIntent.setType("image/*");
+            startActivityForResult(photoPickerIntent, RESULT_LOAD_IMAGE);
         }
 
         return super.onOptionsItemSelected(item);
@@ -107,7 +116,7 @@ public class NoteActivity extends AppCompatActivity {
             ImageView iv = new ImageView(this);
             linearNote = findViewById(R.id.linear_notes);
             linearNote.addView(iv);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 600);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1000);
             lp.setMargins(10,10,10,10);
             iv.setLayoutParams(lp);
             iv.setImageBitmap(imageBitmap);
@@ -121,7 +130,40 @@ public class NoteActivity extends AppCompatActivity {
 
             //Add click listener
             registerForContextMenu(iv);
+        }else if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK) {
+            try {
+                Uri imageUri = data.getData();
+                InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                Bitmap imageBitmap = BitmapFactory.decodeStream(imageStream);
+
+                //Set image on view
+                ImageView iv = new ImageView(this);
+                linearNote = findViewById(R.id.linear_notes);
+                linearNote.addView(iv);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1000);
+                lp.setMargins(10,10,10,10);
+                iv.setLayoutParams(lp);
+                iv.setImageBitmap(imageBitmap);
+
+                //Add to Persistence
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] imageByte = baos.toByteArray();
+
+                note.getPhotos().add(imageByte);
+
+                //Add click listener
+                registerForContextMenu(iv);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        }else {
+            Toast.makeText(this, "You haven't picked Image",Toast.LENGTH_LONG).show();
         }
+
     }
 
 
@@ -205,7 +247,7 @@ public class NoteActivity extends AppCompatActivity {
         ImageView iv = new ImageView(this);
         linearNote = findViewById(R.id.linear_notes);
         linearNote.addView(iv);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 600);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1000);
         lp.setMargins(10,10,10,10);
         iv.setLayoutParams(lp);
         iv.setImageBitmap(imageBitmap);

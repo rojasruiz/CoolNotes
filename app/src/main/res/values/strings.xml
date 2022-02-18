@@ -6,4 +6,6 @@
     <string name="note_tittle">Note tittle</string>
     <string name="note_description">Note description</string>
     <string name="add_photo">Add photo</string>
+    <string name="notes">Notes</string>
+    <string name="cloud">Cloud</string>
 </resources>
