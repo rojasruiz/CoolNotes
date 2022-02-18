@@ -115,7 +115,6 @@ public class DashboardFragment extends Fragment {
 
     private void setUpRecycler() {
 
-        //TODO change input list
         recycler = view.findViewById(R.id.recycler_notes);
         StaggeredGridLayoutManager mLayout = new StaggeredGridLayoutManager(2,1);
         recycler.setLayoutManager(mLayout);
