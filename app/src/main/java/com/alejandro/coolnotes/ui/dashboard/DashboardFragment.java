@@ -84,11 +84,9 @@ public class DashboardFragment extends Fragment {
                     public void onActivityResult(ActivityResult result) {
 
                         if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent intent = result.getData();
-                            notesList = (ArrayList<Note>) intent.getExtras().get("notesList");
+                            vault.loadVaultFromFile(main.getFilesDir());
+                            notesList = vault.getNotesList();
                             setUpRecycler();
-                            vault.setNotesList(notesList);
-                            vault.saveVaultToFile(main.getFilesDir());
                         }
                     }
                 }
@@ -102,11 +100,7 @@ public class DashboardFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Note newNote = new Note();
-                notesList.add(newNote);
                 Intent intent = new Intent(main, NoteActivity.class);
-                intent.putExtra("notesList",notesList);
                 intent.putExtra("newNote", true);
                 activityResultLauncher.launch(intent);
             }
@@ -126,7 +120,6 @@ public class DashboardFragment extends Fragment {
 
     public void openNote(int notePos){
         Intent intent = new Intent(main, NoteActivity.class);
-        intent.putExtra("notesList",notesList);
         intent.putExtra("newNote", false);
         intent.putExtra("notePos",notePos);
         activityResultLauncher.launch(intent);

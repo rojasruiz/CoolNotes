@@ -40,6 +40,7 @@ public class NoteActivity extends AppCompatActivity {
     private Note note;
     private LinearLayout linearNote;
     private ImageView imageSelected;
+    private PersistenceVault vault;
 
 
     @Override
@@ -169,8 +170,9 @@ public class NoteActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        vault.setNotesList(noteList);
+        vault.saveVaultToFile(getFilesDir());
         Intent result = new Intent();
-        result.putExtra("notesList", noteList);
         setResult(RESULT_OK, result);
         finish();
     }
@@ -178,18 +180,20 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        PersistenceVault vault = new PersistenceVault();
         vault.setNotesList(noteList);
         vault.saveVaultToFile(getFilesDir());
     }
 
     private void initNote() {
+        vault = new PersistenceVault(getFilesDir());
+        noteList = vault.getNotesList();
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        noteList = (ArrayList<Note>) extras.get("notesList");
         Boolean newNote = extras.getBoolean("newNote");
 
         if (newNote) {
+            Note newNoteObject = new Note();
+            noteList.add(newNoteObject);
             note = noteList.get(noteList.size() - 1);
         } else {
             int notePos = extras.getInt("notePos");
