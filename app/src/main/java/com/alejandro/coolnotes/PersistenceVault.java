@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class PersistenceVault {
     private ArrayList<Note> notesList;
+    private ArrayList<Notification> notificationsList;
 
     public PersistenceVault() {
     }
@@ -26,6 +27,14 @@ public class PersistenceVault {
         this.notesList = notesList;
     }
 
+    public ArrayList<Notification> getNotificationsList() {
+        return notificationsList;
+    }
+
+    public void setNotificationsList(ArrayList<Notification> notificationsList) {
+        this.notificationsList = notificationsList;
+    }
+
     public void loadVaultFromFile(File path) {
 
         File fileName = new File(path, "/" + "vault.dat");
@@ -37,12 +46,13 @@ public class PersistenceVault {
             ObjectInputStream in = new ObjectInputStream(file);
 
             // Method for deserialization of object
-            ArrayList<Note> notes = (ArrayList<Note>) in.readObject();
+            PersistenceVault vault = (PersistenceVault) in.readObject();
 
             in.close();
             file.close();
 
-            this.notesList = notes;
+            this.notesList = vault.getNotesList();
+            this.notificationsList = vault.getNotificationsList();
 
         } catch (IOException ex) {
             System.out.println("Vault not found");
@@ -64,7 +74,7 @@ public class PersistenceVault {
             ObjectOutputStream out = new ObjectOutputStream(file);
 
             // Method for serialization of object
-            out.writeObject(this.notesList);
+            out.writeObject(this);
 
             out.close();
             file.close();

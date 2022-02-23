@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -24,8 +25,11 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.alejandro.coolnotes.AdapterNotes;
 import com.alejandro.coolnotes.MainActivity;
 import com.alejandro.coolnotes.PersistenceVault;
 import com.alejandro.coolnotes.R;
@@ -34,6 +38,8 @@ import com.alejandro.coolnotes.databinding.FragmentNotificationsBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
+
+import jp.wasabeef.recyclerview.animators.LandingAnimator;
 
 public class NotificationsFragment extends Fragment {
 
@@ -151,6 +157,14 @@ public class NotificationsFragment extends Fragment {
     }
 
     private void setUpRecycler() {
+
+        recycler = getView().findViewById(R.id.recycler_notifications);
+        LinearLayoutManager mLayout = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        recycler.setLayoutManager(mLayout);
+        RecyclerView.Adapter adapter;
+        recycler.setAdapter(adapter);
+        recycler.setItemAnimator(new LandingAnimator(new OvershootInterpolator(2.0f)));
+        recycler.getItemAnimator().setRemoveDuration(220);
     }
 
     @Override

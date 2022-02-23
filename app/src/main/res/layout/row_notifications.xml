@@ -44,7 +44,7 @@
                     android:textSize="25sp"
                     android:layout_weight="10"/>
                 <ImageButton
-                    android:id="@+id/delRowButton"
+                    android:id="@+id/delNotification"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
