@@ -8,4 +8,7 @@
     <string name="add_photo">Add photo</string>
     <string name="notes">Notes</string>
     <string name="cloud">Cloud</string>
+    <string name="reminder">Reminder</string>
+    <string name="reminder_desc">Type in your reminder</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -6,9 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PersistenceVault {
+public class PersistenceVault implements Serializable {
     private ArrayList<Note> notesList;
     private ArrayList<Notification> notificationsList;
 
@@ -54,9 +55,14 @@ public class PersistenceVault {
             this.notesList = vault.getNotesList();
             this.notificationsList = vault.getNotificationsList();
 
+            System.out.println(notesList);
+            System.out.println(notificationsList);
+
         } catch (IOException ex) {
             System.out.println("Vault not found");
             this.notesList = new ArrayList<Note>();
+            this.notificationsList = new ArrayList<Notification>();
+            saveVaultToFile(path);
         } catch (ClassNotFoundException ex) {
             System.out.println("ClassNotFoundException is caught");
         }

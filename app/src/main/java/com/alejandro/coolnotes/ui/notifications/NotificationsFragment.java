@@ -2,12 +2,14 @@ package com.alejandro.coolnotes.ui.notifications;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -51,6 +54,7 @@ public class NotificationsFragment extends Fragment {
     private SharedPreferences preferences;
     private int notificationId;
     private Calendar date;
+    private String notifText;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -84,25 +88,45 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                final Calendar currentDate = Calendar.getInstance();
-                date = Calendar.getInstance();
-                new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                AlertDialog.Builder MyAlert = new AlertDialog.Builder(getContext());
+                MyAlert.setTitle(getString(R.string.reminder));
+                MyAlert.setMessage(getString(R.string.reminder_desc));
+                LayoutInflater myinflater = getLayoutInflater();
+                View view = myinflater.inflate(R.layout.reminder_text,null);
+                MyAlert.setView(view);
+                MyAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        date.set(year, monthOfYear, dayOfMonth);
-                        new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                date.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                                date.set(Calendar.MINUTE, minute);
-                                launchNotification();
-                                newNotificationPersistence();
-                            }
-                        }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), true).show();
-                    }
-                }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE)).show();
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        EditText etReminderText = (EditText) view.findViewById(R.id.et_reminder_text);
+                        notifText = etReminderText.getText().toString();
+                        launchDateTimePicker();
+                    }});
+
+                MyAlert.setNegativeButton(getString(R.string.cancel), null);
+                AlertDialog dialog = MyAlert.create();
+                dialog.show();
             }
         });
+    }
+
+    private void launchDateTimePicker() {
+        final Calendar currentDate = Calendar.getInstance();
+        date = Calendar.getInstance();
+        new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                date.set(year, monthOfYear, dayOfMonth);
+                new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        date.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        date.set(Calendar.MINUTE, minute);
+                        launchNotification();
+                        newNotificationPersistence();
+                    }
+                }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), true).show();
+            }
+        }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DATE)).show();
     }
 
     private void newNotificationPersistence() {
@@ -116,8 +140,8 @@ public class NotificationsFragment extends Fragment {
         notificationId = preferences.getInt("notificationId",0);
 
         //Notification launch
-        ReminderBroadcast.setTittle("Hola");
-        ReminderBroadcast.setDescription("Funciona?");
+        ReminderBroadcast.setTittle(getString(R.string.reminder));
+        ReminderBroadcast.setDescription(notifText);
         ReminderBroadcast.setId(notificationId);
 
         Intent intent = new Intent(getContext(), ReminderBroadcast.class);
@@ -158,13 +182,14 @@ public class NotificationsFragment extends Fragment {
 
     private void setUpRecycler() {
 
-        recycler = getView().findViewById(R.id.recycler_notifications);
+        /*recycler = getView().findViewById(R.id.recycler_notifications);
         LinearLayoutManager mLayout = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recycler.setLayoutManager(mLayout);
         RecyclerView.Adapter adapter;
         recycler.setAdapter(adapter);
         recycler.setItemAnimator(new LandingAnimator(new OvershootInterpolator(2.0f)));
         recycler.getItemAnimator().setRemoveDuration(220);
+        */
     }
 
     @Override
