@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "523509527597",
+    "project_id": "coolnotes-62d1c",
+    "storage_bucket": "coolnotes-62d1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523509527597:android:f18759c7e1182d5447f4a4",
+        "android_client_info": {
+          "package_name": "com.alejandro.coolnotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "523509527597-l9mhhaal1nd4df8ab09jubv6gdvdf9h7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alejandro.coolnotes",
+            "certificate_hash": "fc5f9b789820de716ef4b19f504c0f98360d6167"
+          }
+        },
+        {
+          "client_id": "523509527597-9r6itih5iu9d4ojbilqv8lris2qisnbf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiuEMYgUJQOeYWuPlkfz_-fxEFd5wabGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "523509527597-9r6itih5iu9d4ojbilqv8lris2qisnbf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
