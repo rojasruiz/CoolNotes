@@ -33,13 +33,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.alejandro.coolnotes.AdapterNotes;
+import com.alejandro.coolnotes.AdapterNotifications;
 import com.alejandro.coolnotes.MainActivity;
+import com.alejandro.coolnotes.Notification;
 import com.alejandro.coolnotes.PersistenceVault;
 import com.alejandro.coolnotes.R;
 import com.alejandro.coolnotes.ReminderBroadcast;
 import com.alejandro.coolnotes.databinding.FragmentNotificationsBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import jp.wasabeef.recyclerview.animators.LandingAnimator;
@@ -55,6 +58,7 @@ public class NotificationsFragment extends Fragment {
     private int notificationId;
     private Calendar date;
     private String notifText;
+    private ArrayList<Notification> notificationsList;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -70,6 +74,7 @@ public class NotificationsFragment extends Fragment {
         //Persistence
         main = getActivity();
         vault = new PersistenceVault(main.getFilesDir());
+        notificationsList = vault.getNotificationsList();
 
         return root;
     }
@@ -78,8 +83,13 @@ public class NotificationsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         preferences = getActivity().getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        deletePastNotifications();
         setUpRecycler();
         configureButton();
+    }
+
+    private void deletePastNotifications() {
+        notificationsList.removeIf(notif -> notif.getDate().before(Calendar.getInstance()));
     }
 
     private void configureButton() {
@@ -92,7 +102,7 @@ public class NotificationsFragment extends Fragment {
                 MyAlert.setTitle(getString(R.string.reminder));
                 MyAlert.setMessage(getString(R.string.reminder_desc));
                 LayoutInflater myinflater = getLayoutInflater();
-                View view = myinflater.inflate(R.layout.reminder_text,null);
+                View view = myinflater.inflate(R.layout.reminder_text, null);
                 MyAlert.setView(view);
                 MyAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
@@ -100,7 +110,8 @@ public class NotificationsFragment extends Fragment {
                         EditText etReminderText = (EditText) view.findViewById(R.id.et_reminder_text);
                         notifText = etReminderText.getText().toString();
                         launchDateTimePicker();
-                    }});
+                    }
+                });
 
                 MyAlert.setNegativeButton(getString(R.string.cancel), null);
                 AlertDialog dialog = MyAlert.create();
@@ -130,14 +141,21 @@ public class NotificationsFragment extends Fragment {
     }
 
     private void newNotificationPersistence() {
-        //TODO esta mierda
+        Notification notification = new Notification();
+        notification.setDate(date);
+        notification.setId(notificationId-1);
+        notification.setDescription(notifText);
+        notificationsList.add(notification);
+        recycler.getAdapter().notifyItemInserted(recycler.getAdapter().getItemCount() + 1);
+        vault.setNotificationsList(notificationsList);
+        vault.saveVaultToFile(getActivity().getFilesDir());
     }
 
     public void launchNotification() {
         long milisSet = date.getTimeInMillis();
 
         //Get notification id
-        notificationId = preferences.getInt("notificationId",0);
+        notificationId = preferences.getInt("notificationId", 0);
 
         //Notification launch
         ReminderBroadcast.setTittle(getString(R.string.reminder));
@@ -149,16 +167,7 @@ public class NotificationsFragment extends Fragment {
 
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,milisSet,pendingIntent);
-
-        //Delete notification
-
-                /*
-                AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-                Intent intent2 = new Intent(getContext(), ReminderBroadcast.class);
-                PendingIntent pendingIntent2 = PendingIntent.getBroadcast(getContext(), notificationId, intent, 0);
-                alarmManager.cancel(pendingIntent2);
-                pendingIntent2.cancel();*/
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, milisSet, pendingIntent);
 
         //Save notification id
         notificationId++;
@@ -167,12 +176,12 @@ public class NotificationsFragment extends Fragment {
         editor.commit();
     }
 
-    private void createNotificationChannel(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "LemubitReminderChannel";
             String description = "Channel for Lemubit reminder";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("notifyLemubit",name,importance);
+            NotificationChannel channel = new NotificationChannel("notifyLemubit", name, importance);
             channel.setDescription(description);
 
             NotificationManager notificationManager = getActivity().getSystemService(NotificationManager.class);
@@ -182,19 +191,33 @@ public class NotificationsFragment extends Fragment {
 
     private void setUpRecycler() {
 
-        /*recycler = getView().findViewById(R.id.recycler_notifications);
+        recycler = getView().findViewById(R.id.recycler_notifications);
         LinearLayoutManager mLayout = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recycler.setLayoutManager(mLayout);
-        RecyclerView.Adapter adapter;
+        AdapterNotifications adapter = new AdapterNotifications(getContext(), notificationsList, this);
         recycler.setAdapter(adapter);
         recycler.setItemAnimator(new LandingAnimator(new OvershootInterpolator(2.0f)));
         recycler.getItemAnimator().setRemoveDuration(220);
-        */
+
+    }
+
+    public void deleteNotificationService(int notifId) {
+
+        //Delete notification
+        AlarmManager alarmManager2 = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        Intent intent2 = new Intent(getContext(), ReminderBroadcast.class);
+        PendingIntent pendingIntent2 = PendingIntent.getBroadcast(getContext(), notifId, intent2, 0);
+        alarmManager2.cancel(pendingIntent2);
+        pendingIntent2.cancel();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    public PersistenceVault getVault() {
+        return vault;
     }
 }
