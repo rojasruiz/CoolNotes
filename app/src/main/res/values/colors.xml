@@ -7,9 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="primary_pink">#DB00CC</color>
-    <color name="primary_pink_variant">#8F0085</color>
-    <color name="secondary_green">#68FF26</color>
-    <color name="secondary_green_variant">#2B8F00</color>
+    <color name="primary">#1F9FF0</color>
+    <color name="primary_variant">#1D70A3</color>
+    <color name="secondary">#F0EE4F</color>
+    <color name="secondary_variant">#F0D901</color>
 
 </resources>
