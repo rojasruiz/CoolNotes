@@ -49,16 +49,20 @@ public class AdapterNotifications extends RecyclerView.Adapter<AdapterNotificati
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notification notif = mData.get(position);
         Calendar date = notif.getDate();
-        int hour = date.get(Calendar.HOUR);
-        int minute = date.get(Calendar.MINUTE);
-        int day = date.get(Calendar.DATE);
-        int month = date.get(Calendar.MONTH);
+        String hour = String.valueOf(date.get(Calendar.HOUR_OF_DAY));
+        String minute = String.valueOf(date.get(Calendar.MINUTE));
+        String day = String.valueOf(date.get(Calendar.DATE));
+        String month = String.valueOf(date.get(Calendar.MONTH));
+
+        hour = (hour.length() <=1) ? "0" + hour : hour;
+        minute = (minute.length() <=1) ? "0" + minute : minute;
 
         String dateString = day + "/" + month + "\n" + hour + ":" + minute;
 
         holder.notifDate.setText(dateString);
         holder.notifText.setText(notif.getDescription());
 
+        //Delete notification button
         holder.delNotif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

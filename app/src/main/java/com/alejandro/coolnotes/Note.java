@@ -13,6 +13,7 @@ public class Note implements Serializable {
         tittle = "";
         description = "";
         photos = new ArrayList<byte[]>();
+        //Photos are stored as an array of bytes as "BitMap" is not serializable
     }
 
     public String getTittle() {

@@ -193,6 +193,7 @@ public class NoteActivity extends AppCompatActivity {
         Bundle extras = intent.getExtras();
         Boolean newNote = extras.getBoolean("newNote");
 
+        //Retrieve the opened note or creates a new one if new note was selected
         if (newNote) {
             Note newNoteObject = new Note();
             noteList.add(newNoteObject);
@@ -205,6 +206,7 @@ public class NoteActivity extends AppCompatActivity {
         tittle.setText(note.getTittle());
         description.setText(note.getDescription());
 
+        //Store the edit text values as its change
         tittle.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -239,6 +241,7 @@ public class NoteActivity extends AppCompatActivity {
             }
         });
 
+        //Deploy saves photos
         ArrayList<byte[]> photos = note.getPhotos();
 
         for(byte[] photo : photos){

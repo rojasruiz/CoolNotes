@@ -73,6 +73,10 @@ public class HomeFragment extends Fragment {
         updateUI(account);
     }
 
+    /**
+     * This method updates the cloud fragment as if the user is loged in or not
+     * @param account the Google account on which the user has been logged, null if not logged
+     */
     private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
             linearNotLogged.setVisibility(View.GONE);

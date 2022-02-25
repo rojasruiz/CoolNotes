@@ -69,9 +69,6 @@ public class PersistenceVault implements Serializable {
             this.notesList = vault.getNotesList();
             this.notificationsList = vault.getNotificationsList();
 
-            System.out.println(notesList);
-            System.out.println(notificationsList);
-
         } catch (IOException ex) {
             System.out.println("Vault not found");
             this.notesList = new ArrayList<Note>();

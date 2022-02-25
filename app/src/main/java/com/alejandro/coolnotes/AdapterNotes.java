@@ -57,6 +57,7 @@ public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.ViewHolder> 
         holder.title.setText(note.getTittle());
         holder.description.setText(note.getDescription());
 
+        //Button delete note
         holder.delRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +71,7 @@ public class AdapterNotes extends RecyclerView.Adapter<AdapterNotes.ViewHolder> 
             }
         });
 
+        //Save the edit text content as it changes
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
