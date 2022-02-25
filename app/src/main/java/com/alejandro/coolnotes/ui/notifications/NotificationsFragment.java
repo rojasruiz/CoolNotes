@@ -149,6 +149,7 @@ public class NotificationsFragment extends Fragment {
         recycler.getAdapter().notifyItemInserted(recycler.getAdapter().getItemCount() + 1);
         vault.setNotificationsList(notificationsList);
         vault.saveVaultToFile(getActivity().getFilesDir());
+        vault.saveVaultToCloud(getActivity().getFilesDir(), getActivity());
     }
 
     public void launchNotification() {

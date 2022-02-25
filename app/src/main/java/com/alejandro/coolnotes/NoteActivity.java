@@ -172,6 +172,7 @@ public class NoteActivity extends AppCompatActivity {
     public void onBackPressed() {
         vault.setNotesList(noteList);
         vault.saveVaultToFile(getFilesDir());
+        vault.saveVaultToCloud(getFilesDir(),this);
         Intent result = new Intent();
         setResult(RESULT_OK, result);
         finish();
@@ -182,6 +183,7 @@ public class NoteActivity extends AppCompatActivity {
         super.onDestroy();
         vault.setNotesList(noteList);
         vault.saveVaultToFile(getFilesDir());
+        vault.saveVaultToCloud(getFilesDir(),this);
     }
 
     private void initNote() {

@@ -1,9 +1,23 @@
 package com.alejandro.coolnotes;
 
+import android.app.Activity;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -87,6 +101,39 @@ public class PersistenceVault implements Serializable {
         } catch (IOException ex) {
             System.out.println("IOException is caught");
             ex.printStackTrace();
+        }
+    }
+
+    public void saveVaultToCloud(File path, Activity activity) {
+
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(activity);
+
+        if (acct != null) {
+            try {
+
+                File fileName = new File(path, "/" + "vault.dat");
+
+                InputStream stream = new FileInputStream(fileName);
+
+                String destiny = "vaults/vault" + acct.getId() + ".dat";
+                StorageReference mountainsRef = FirebaseStorage.getInstance().getReference().child(destiny);
+
+                UploadTask uploadTask = mountainsRef.putStream(stream);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Toast.makeText(activity, "Save to cloud fail", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        System.out.println("save to cloud success");
+                    }
+                });
+
+            } catch (Exception e) {
+                Toast.makeText(activity, "Save to cloud fail", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

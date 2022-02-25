@@ -39,5 +39,11 @@
             android:text="Logged account"
             android:textAlignment="center"/>
 
+        <Button
+            android:id="@+id/load_cloud_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/load_cloud_data_button" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
