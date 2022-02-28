@@ -52,7 +52,7 @@ public class AdapterNotifications extends RecyclerView.Adapter<AdapterNotificati
         String hour = String.valueOf(date.get(Calendar.HOUR_OF_DAY));
         String minute = String.valueOf(date.get(Calendar.MINUTE));
         String day = String.valueOf(date.get(Calendar.DATE));
-        String month = String.valueOf(date.get(Calendar.MONTH));
+        String month = String.valueOf(date.get(Calendar.MONTH) + 1);
 
         hour = (hour.length() <=1) ? "0" + hour : hour;
         minute = (minute.length() <=1) ? "0" + minute : minute;

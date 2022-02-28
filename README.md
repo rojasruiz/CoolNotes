@@ -14,6 +14,10 @@ It have the following parts:
 
 This is the main screen on which the user can consult, add, or delete notes
 
+![Notes images](./ReadmeImages/Screenshot_images.png)
+
+Also you can add images to your notes, by adding them from your gallery, or directly taking a photo with your device
+
 ## Notification screen
 
 ![Notifications screen](./ReadmeImages/Screenshot_Reminders.png)
